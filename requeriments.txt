@@ -37,5 +37,5 @@ shap==0.45.0
 # Experiment Tracking
 mlflow==2.12.1
 
-# Kaggle API
-kaggle==1.6.12
+# Dashboard e apps interativos
+streamlit==1.35.0

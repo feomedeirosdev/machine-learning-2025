@@ -7,6 +7,9 @@ df = pd.read_csv(data_path)
 df.head()
 
 # %%
+df['Estado que mora atualmente'].unique()
+
+# %%
 df = df.replace({
    "Não": 0,
    "Sim": 1
@@ -74,7 +77,45 @@ nb_model_recall = metrics.recall_score(df_predict['Pessoa Feliz'], nb_predict)
 
 # %%
 nb_roc = metrics.roc_curve(df_predict['Pessoa Feliz'], nb_proba)
-nb_roc
 
 import matplotlib.pyplot as plt
 plt.plot(nb_roc[0], nb_roc[1], 'o-')
+
+# %%
+from sklearn import linear_model
+
+rlog_model = linear_model.LogisticRegression(
+   max_iter=10000,
+   penalty=None,
+   fit_intercept=True
+)
+
+rlog_model.fit(X, y)
+
+rlog_predict = rlog_model.predict(X)
+rlog_proba = rlog_model.predict_proba(X)[:,1]
+
+rlog_acc = metrics.accuracy_score(df_predict['Pessoa Feliz'], rlog_predict)
+rlog_recall = metrics.recall_score(df_predict['Pessoa Feliz'], rlog_predict)
+rlog_precision = metrics.precision_score(df_predict['Pessoa Feliz'], rlog_predict)
+
+# %%
+rlog_roc = metrics.roc_curve(df_predict['Pessoa Feliz'], rlog_proba)
+
+import matplotlib.pyplot as plt
+plt.plot(rlog_roc[0], rlog_roc[1], 'o-')
+
+# %%
+pd.Series({
+   'model': rlog_model,
+   'features': features,
+}).to_pickle('model_feliz.pkl')
+
+# %%
+dummy_vars
+
+# %%
+df_analisys.columns.tolist()
+# %%
+dummy_vars
+# %%
